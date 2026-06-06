@@ -75,14 +75,12 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest --info --stacktrace --scan
         continue-on-error: true
-
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: test-reports
           path: app/build/reports/tests/testDebugUnitTest/
-
       - name: Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
 

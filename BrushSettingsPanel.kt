@@ -12,8 +12,6 @@ fun BrushSettingsPanel(
     brush: Brush,
     onBrushSizeChange: (Float) -> Unit,
     onBrushOpacityChange: (Float) -> Unit,
-    onColorChange: (Int) -> Unit = {}, // optional
-    onPressureCurveUpdate: (List<Pair<Float, Float>>) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Card(modifier = modifier.padding(8.dp)) {
@@ -29,14 +27,6 @@ fun BrushSettingsPanel(
                 value = brush.opacity,
                 onValueChange = onBrushOpacityChange,
                 valueRange = 0f..1f
-            )
-
-            Spacer(Modifier.height(8.dp))
-
-            // Pressure curve with draggable Bézier points (Polish Phase 1)
-            PressureCurveEditor(
-                brush = brush,
-                onCurveUpdated = onPressureCurveUpdate
             )
         }
     }

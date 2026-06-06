@@ -165,21 +165,17 @@ fun CircularToolPanels(viewModel: CanvasViewModel) {
         "+" to { viewModel.addLayer(); performHaptic(30) },
         "1" to { viewModel.selectLayer(0); performHaptic(20) },
         "2" to { if (viewModel.getCurrentLayerCount() > 1) viewModel.selectLayer(1); performHaptic(20) },
-        "3" to { if (viewModel.getCurrentLayerCount() > 2) viewModel.selectLayer(2); performHaptic(20) },
-        "Op" to { /* deeper control in expanded card */ performHaptic(15) },
-        "Bl" to { /* blend in expanded */ performHaptic(15) }
+        "3" to { if (viewModel.getCurrentLayerCount() > 2) viewModel.selectLayer(2); performHaptic(20) }
     )
     val playbackChildren = listOf(
         "▶" to { viewModel.togglePlayback(); performHaptic(30) },
         "+" to { viewModel.addFrame(); performHaptic(25) },
-        "⟲" to { viewModel.scrubToTime(0); performHaptic(20) },
-        "Exp" to { viewModel.exportAudioWithProject(); performHaptic(30) }  // Phase 2 polish audio export from circular
+        "⟲" to { viewModel.scrubToTime(0); performHaptic(20) }
     )
     val guideChildren = listOf(
         "Grid" to { viewModel.toggleGridSnap(); performHaptic(25) },
         "Persp" to { viewModel.togglePerspectiveGuides(); performHaptic(25) },
-        "SymC" to { viewModel.setSymmetryCenter(960f, 540f); performHaptic(25) },  // default center
-        "Perf" to { viewModel.setHighPerfMode(!viewModel.highPerfMode); performHaptic(30) }  // Performance further toggle
+        "SymC" to { viewModel.setSymmetryCenter(960f, 540f); performHaptic(25) }  // default center
     )
 
     // Render each satellite panel
@@ -383,78 +379,6 @@ fun CircularToolPanels(viewModel: CanvasViewModel) {
                                 }
                                 drawPath(path, Color.Cyan, style = Stroke(1.5f))
                             }
-                        }
-                    }
-                }
-            }
-
-            // Deeper layers/compositing integration (this step): expanded card for current layer opacity, blend modes, layer list
-            if (id == "layers") {
-                val previewOffsetX = pos.x + 70f
-                val previewOffsetY = pos.y - 20f
-                Box(
-                    modifier = Modifier
-                        .offset { IntOffset(previewOffsetX.toInt(), previewOffsetY.toInt()) }
-                        .width(180.dp)
-                        .background(Color(0xCC222222), shape = MaterialTheme.shapes.small)
-                        .border(1.dp, baseColor, MaterialTheme.shapes.small)
-                        .padding(6.dp)
-                ) {
-                    Column {
-                        Text("Layer Compositing", color = Color.White, fontSize = androidx.compose.ui.unit.TextUnit(10f, androidx.compose.ui.unit.TextUnitType.Sp))
-                        Spacer(Modifier.height(2.dp))
-
-                        // Current layer info
-                        val layerCount = viewModel.getCurrentLayerCount()
-                        val curIdx = viewModel.currentLayerIndex  // note: may need exposure, using direct for now
-                        Text("Layer ${curIdx + 1} / $layerCount", color = Color.LightGray, fontSize = androidx.compose.ui.unit.TextUnit(9f, androidx.compose.ui.unit.TextUnitType.Sp))
-
-                        // Opacity slider (deeper)
-                        val curOpacity = viewModel.getCurrentLayerOpacity()
-                        Text("Opacity: ${(curOpacity * 100).toInt()}%", color = Color.LightGray, fontSize = androidx.compose.ui.unit.TextUnit(9f, androidx.compose.ui.unit.TextUnitType.Sp))
-                        Slider(
-                            value = curOpacity,
-                            onValueChange = { viewModel.setCurrentLayerOpacity(it) },
-                            valueRange = 0f..1f,
-                            modifier = Modifier.height(18.dp)
-                        )
-
-                        // Blend mode selector (deeper)
-                        Text("Blend: ${viewModel.getCurrentLayerBlendMode().name}", color = Color(0xFF88FFAA), fontSize = androidx.compose.ui.unit.TextUnit(9f, androidx.compose.ui.unit.TextUnitType.Sp))
-                        Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                            viewModel.getCurrentLayerBlendModes().forEach { mode ->
-                                Box(
-                                    modifier = Modifier
-                                        .size(32.dp)
-                                        .background(if (viewModel.getCurrentLayerBlendMode() == mode) baseColor else Color(0xFF444444), CircleShape)
-                                        .clickable {
-                                            viewModel.setCurrentLayerBlendMode(mode)
-                                            performHaptic(20)
-                                        }
-                                ) {
-                                    Text(mode.name.take(3), color = Color.White, fontSize = androidx.compose.ui.unit.TextUnit(7f, androidx.compose.ui.unit.TextUnitType.Sp), modifier = Modifier.align(Alignment.Center))
-                                }
-                            }
-                        }
-
-                        Spacer(Modifier.height(4.dp))
-
-                        // Quick layer list (select)
-                        Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                            for (i in 0 until minOf(layerCount, 5)) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(22.dp)
-                                        .background(if (i == curIdx) baseColor else Color(0xFF555555), CircleShape)
-                                        .clickable {
-                                            viewModel.selectLayer(i)
-                                            performHaptic(15)
-                                        }
-                                ) {
-                                    Text("${i+1}", color = Color.White, fontSize = androidx.compose.ui.unit.TextUnit(8f, androidx.compose.ui.unit.TextUnitType.Sp), modifier = Modifier.align(Alignment.Center))
-                                }
-                            }
-                            if (layerCount > 5) Text("...", color = Color.LightGray, fontSize = androidx.compose.ui.unit.TextUnit(8f, androidx.compose.ui.unit.TextUnitType.Sp))
                         }
                     }
                 }
