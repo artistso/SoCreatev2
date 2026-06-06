@@ -1,0 +1,12 @@
+To initialize Gradle wrapper for local builds and GitHub compatibility:
+
+1. In terminal (from project root):
+   gradle wrapper --gradle-version 8.2
+
+   (or use Android Studio: File > Project Structure > Project > Gradle version)
+
+2. This will generate gradlew, gradlew.bat, and gradle/wrapper/ files.
+
+The GitHub Actions workflow uses android-actions/setup-android which handles the build without needing wrapper in repo sometimes, but having it is best practice.
+
+The provided code is the full source for Phase 1.

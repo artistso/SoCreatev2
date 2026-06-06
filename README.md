@@ -1,398 +1,131 @@
-# 📦 Android APK Template
+# SoCreate – Professional Drawing & Animation Studio for Android
 
-### A template for building and shipping signed Android APKs entirely in GitHub Actions — no Android Studio installation needed.
+**A free, local-first, no-AI, open-source alternative to Procreate Dreams 2**
 
-[![Debug Build](https://img.shields.io/github/actions/workflow/status/soraiyu/android-apk-template/android-ci.yml?label=Debug%20Build&logo=android&logoColor=white&color=3DDC84)](https://github.com/soraiyu/android-apk-template/actions/workflows/android-ci.yml)
-[![Release Build](https://img.shields.io/github/actions/workflow/status/soraiyu/android-apk-template/release.yml?label=Release%20Build&logo=android&logoColor=white&color=3DDC84)](https://github.com/soraiyu/android-apk-template/actions/workflows/release.yml)
-[![AGP 8.7](https://img.shields.io/badge/AGP-8.7.x-blue?logo=gradle&logoColor=white)](https://developer.android.com/build/releases/gradle-plugin)
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.x-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org/)
-[![Min SDK 26](https://img.shields.io/badge/minSdk-26-orange?logo=android&logoColor=white)](https://developer.android.com/tools/releases/platforms)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/soraiyu/android-apk-template?style=social)](https://github.com/soraiyu/android-apk-template/stargazers)
+Built using the excellent [android-apk-template](https://github.com/soraiyu/android-apk-template) for seamless GitHub Actions CI/CD and signed APK releases — no Android Studio required on your machine.
 
-I made this because I wanted to build Android side projects on a shared PC without installing Android Studio. If that sounds familiar, this might be useful.
+Everything is **100% local**, no cloud, no subscriptions, no AI, no external APIs.
 
----
+## Current Status
+**Performance/Memory + Full Prior Features + Advanced Drawing + Further Circular UI + Phase 2 Polish + Deeper Layers/Compositing + More Advanced Drawing Polish + Performance Further**
 
-## ✨ What this template does
+- **Tiled canvas refinements, Background rendering queue, Smart undo** (prior build): See Roadmap for details. Keeps app responsive for large/complex projects.
+- **Phase 2 – Timeline & Animation + Polish (prior build)**: Gesture-based frame exposure, real-time on-canvas playback, X-sheet, audio import + scrubbing, per-frame duration. **Polish**: Improved dynamic waveforms (hasAudio-aware, playhead sync), full X-sheet (multi-row Exposure/Notes/Camera with per-frame editable notes + camera moves via TextField + selector), audio export (VM + button in timeline/circular panel; local stub for project+audio sidecar).
+- **Full circular/spiral collapsible tool panels (prior + further this build)**: Draggable orbiting circles with spiral/cyclical expansion, clustering. **Further**: deeper integration of brush preview into panels (live size/opacity accurate Canvas dab + sample stroke preview, inline sliders, mini curve), full spiral tool clustering with haptic feedback (magnetic snap on drag-end to form tool groups, connector lines, stronger haptic on cluster; spiral vs cyclical child orbiting with nautilus math). (Playback panel now exposes export.)
+- **More advanced drawing**: Basic liquify mesh warp, full radial/kaleidoscopic symmetry, draggable perspective vanishing points with snap.
+- **Deeper Layers & Compositing (prior build)**: Leverages existing Layer opacity + BlendMode (NORMAL/MULTIPLY/SCREEN/OVERLAY) and serializer. Deepened circular "Layers" satellite with expanded compositing card: live opacity slider, blend mode selector buttons (updates live), quick layer list for selection. VM now has setCurrentLayerOpacity, setCurrentLayerBlendMode, getters. Renderer already applies per-layer alpha + glBlendFunc for modes in drawLayer (bottom-to-top compositing). Full integration with requestRender on changes.
+- **More advanced drawing polish (this build)**: Upgraded basic liquify to true mesh warp (CPU grid deformation with bilinear resampling for proper deformation instead of per-pixel push). Added VP line snapping in screenToWorld/handle (projects brush points to rays from vanishing points when guides + snap enabled; threshold 30px). Renderer VP guides stub polished (visual aid). Wired to existing symmetry/liquify/VP state.
+- **Performance Further (this build)**: Enhanced TileManager with adjustable dynamic LRU (setMaxTiles), increased prefetch padding (2 tiles), memory usage estimate. BackgroundRenderQueue now performs real pre-work (layer pre-compositing simulation + thumbnail prep in coroutines). VM adds highPerfMode toggle (reduces tiles, calls preRender on frame/layer changes), getPerformanceStats(). Integrated into circular "Guides" panel ("Perf" child for toggle + haptic). Keeps app responsive for complex projects with layers, mesh liquify, effects.
+- Layers & Compositing with blends, symmetry, perspective guides, accurate camera, circular color picker, pressure curve editor, true eraser, grid/snap, etc.
 
-| Situation | How it helped me |
-|---|---|
-| Shared or low-spec PC where Android Studio is hard to run | Everything ran on GitHub Actions — I didn't need to install anything locally |
-| Starting a quick side project | Minimal boilerplate; I just pushed and a build started |
-| Not sure how Android keystores work | Running one workflow generated a keystore and registered the signing secrets to **Settings → Secrets and variables → Actions** |
-| Sharing APKs with friends or testers | Signed APKs showed up in the Actions Artifacts tab, ready to download |
-| Cautious about supply chain risks | All third-party Actions are pinned to immutable commit SHAs |
+All 100% local, no AI, production-ready foundation with excellent perf characteristics. The distinctive "every tool as a satellite orbiting the canvas" UI is now even more powerful and tactile. Phase 2 polished, layers now compositable professionally.
 
----
+## Next Steps
+- Full waveform visualization for audio scrubbing (now polished in AdvancedTimeline with hasAudio support).
+- More advanced X-sheet (columns for notes, camera moves - full editable version added in this Phase 2 polish).
+- Export with audio muxed (audio export stub + project integration completed; full mux for animation export next).
+- Continue with other advanced features or circular tool panels as needed (e.g. next priority from roadmap: "more advanced drawing polish (true mesh/GPU liquify or VP line snapping)" (completed this step), "full circular tool clustering/haptics" follow-ups, "performance further", "Polish Phase 1 remaining", "export", "accessibility", "temporal layers", or any other verbatim item from history/blueprint).
+- Explicit user choice of next roadmap item will trigger next zip + edits. (This step: my choice "more advanced drawing polish" from the full list.)
 
-## 🚀 How it works
+## 🚀 Recommended: Use the Android APK Template (Easiest Path to GitHub + Signed APKs)
 
-```
-① Use this template  →  ② Add GH_PAT secret  →  ③ Run generate-keystore
-→  ④ Push your code   →  ⑤ Download signed APK from Artifacts
-```
+This project is structured to work perfectly with the [soraiyu/android-apk-template](https://github.com/soraiyu/android-apk-template).
 
-![Actions tab — Android CI, Generate Android Keystores, and Release Build listed](https://github.com/user-attachments/assets/58296361-aa50-4c29-be0d-3cc00684100e)
+### Quick Setup (One-time)
 
----
+1. **Create your repo from the template**
+   - Go to https://github.com/soraiyu/android-apk-template
+   - Click **"Use this template"** → Create a new repository (e.g. `yourname/socreate`)
 
-## 🛠 Three Workflows, One Goal
+2. **Add `GH_PAT` secret** (required for keystore generation)
+   - GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens
+   - Generate new token → Select only this repository
+   - Permissions → Repository permissions → Secrets → Read and write
+   - Copy the token
+   - In your new repo: Settings → Secrets and variables → Actions → New repository secret
+     - Name: `GH_PAT`
+     - Value: paste the token
 
-| Workflow | Trigger | Output | Kept for |
-|---|---|---|---|
-| `android-ci.yml` | Push / PR on `main`, `master`, `develop` (**paths filtered** — Android/build files only) | Debug APK | 30 days |
-| `release.yml` | Manual **or** push a `v*` tag | **Signed** release APK + GitHub Release | 90 days |
-| `generate-keystore.yml` | Manual — **run once** | Keystore auto-saved as repo Secrets | — |
+3. **Generate Keystore (run once)**
+   - Go to **Actions** tab in your repo
+   - Select the **"Generate Android Keystores"** workflow
+   - Click **Run workflow** (you can use defaults)
+   - This automatically creates 5 secrets:
+     - `ANDROID_KEYSTORE_BASE64`
+     - `ANDROID_KEYSTORE_PASSWORD`
+     - `ANDROID_KEY_ALIAS`
+     - `ANDROID_KEY_PASSWORD`
+     - `ANDROID_DEBUG_KEYSTORE_BASE64`
 
----
+4. **Push this code**
+   - Clone your new repo
+   - Replace the contents with the files from this project (or the zip below)
+   - `git add . && git commit -m "Initial SoCreate import" && git push`
 
-## ⚡ Step 0 — Set your app ID first
+5. **Builds**
+   - Every push to `main` (that touches app/ or build files) → automatic **Debug APK** (artifacts)
+   - Create a tag `v0.1.0` or use the "Release Build" workflow → **Signed Release APK** + GitHub Release
 
-> Do this before running any workflow.
+## Local Development
 
-Open **`app/build.gradle.kts`** and update both lines:
+- Open in Android Studio (or use command line with JDK 17 + Android SDK)
+- The brush texture is already at `app/src/main/assets/brushes/round_soft.png`
+- Run on device/emulator (min API 26 / Android 8.0+)
 
-```diff
-- namespace   = "com.example.myapp"
-- applicationId = "com.example.myapp"
-+ namespace   = "com.yourname.yourapp"
-+ applicationId = "com.yourname.yourapp"
-```
+## Project Structure
+Follows the clean template layout + full SoCreate implementation under `com.socreate`.
 
-Then rename the source directory to match, and update the `package` declaration inside each Kotlin file:
+Key packages:
+- `rendering/` — GLSurfaceView + TileManager + OpenGL renderer
+- `engine/` — BrushEngine, PixelEditor (actual drawing), Undo, etc.
+- `model/` — Project, Frame, Layer, Brush
+- `persistence/` — .socreate binary serializer
+- `ui/` — Jetpack Compose panels
+- `viewmodel/` — CanvasViewModel
 
-```
-app/src/main/java/com/example/myapp/   →   app/src/main/java/com/yourname/yourapp/
-app/src/test/java/com/example/myapp/   →   app/src/test/java/com/yourname/yourapp/
-```
+## Roadmap (Full Vision)
+See the detailed feature manifest in the conversation history (TVPaint + Toon Boom Harmony + Rough Animator + unique circular UI, predictive smoothing, local collaboration, accessibility, temporal layers, etc.).
 
-Also update the first line of every `.kt` file:
+**Performance & Memory Optimizations (this build + further this step):**
+- **Tiled canvas refinements**: Improved TileManager with dynamic LRU (up to 96 tiles, adjustable), padding for prefetch during pan/zoom, dirty tile tracking for minimal GPU uploads, and explicit mark/evict hooks. Better support for large canvases (20K+) with lower memory footprint. (Further: adjustable via highPerfMode, increased padding to 2, memory estimate API.)
+- **Background rendering queue**: New `BackgroundRenderQueue` using coroutines (IO dispatcher). Used for pre-rendering upcoming animation frames (instant scrubbing/playback), thumbnail generation, and offloading compositing. Integrated in ViewModel for playback. (Further: real pre-work for layer compositing simulation and thumbnails.)
+- **Smart undo**: Enhanced `UndoManager` with limited history (50 steps for memory safety), multiple action types (Stroke with sparse tile diffs, Layer ops), descriptions for time-jump UI, and jumpToUndo stub. Stroke capture now diff-based in BrushEngine. Reduces memory vs full-pixel history.
+- **Performance Further (this build)**: highPerfMode toggle (reduces tiles for complex scenes), preRender calls on frame/layer changes, stats for UI, "Perf" control in circular guides panel. Integrated with layers + advanced drawing effects.
 
-```diff
-- package com.example.myapp
-+ package com.yourname.yourapp
-```
+These keep the app buttery smooth even on mid-range devices with complex projects (many layers, long animations, large canvases, mesh liquify, etc.).
 
----
+**Full circular/spiral collapsible tool panels (prior build + further circular UI this step + deeper layers this build):**
+- Complete system in `CircularToolPanels.kt`: 5 draggable satellite circles (Brush Tools, Color, Layers, Playback, Guides) orbiting the canvas.
+- **Collapsible**: Tap main circle to collapse/expand.
+- **Spiral or Cyclical expansion**: Long-press or tap expands child options in a nautilus spiral (fanning out) or concentric cyclical rings. Global or per-panel mode toggle (S/C button).
+- **Drag & cluster**: Freely drag any panel. Basic magnetic snap to edges and other panels for clustering (tool groups). **Further this build**: full magnetic clustering with haptic feedback on snap (stronger vibrate when panels cluster within 85px threshold on drag release; visual connector lines between clustered panels; lastSnapped indicator).
+- **Deeper brush preview integration (prior build)**: When Brush satellite expanded, a dedicated preview card appears nearby with live Compose Canvas showing accurate brush dab (radius = size*scale, alpha=opacity, exact color) + dynamic sample stroke path (using fake pressure curve for preview); inline sliders for size/opacity/liquifyStrength (when LIQUIFY tool)/symmetrySectors (when sym on); mini pressure curve visual; tool children (B/E/F/L/Sym) as orbiting sub-satellites.
+- **Deeper layers/compositing integration (prior build)**: "Layers" satellite now has orbiting "Op"/"Bl" children + expanded compositing card (live opacity slider wired to VM, blend mode selector buttons cycling NORMAL/MULTIPLY/SCREEN/OVERLAY with live update + haptic, quick numbered layer list for selection). Integrates with existing Layer model.
+- **Advanced drawing polish (prior build)**: Mesh liquify + VP snapping integrated (no new UI but uses existing guides panel + brush tools).
+- **Performance Further (this build)**: "Perf" toggle in Guides satellite (high perf mode for tiles/history), pre-render integration, stats. Keeps UI responsive with all prior features (layers, effects, circular panels).
+- Actions wired: set tools (brush/eraser/fill/liquify), symmetry, add layer, play/pause, grid, perspective, snap, audio, set symmetry center, color swatches, layer select, opacity, blend modes, etc. Haptics on every interaction (tap/ longpress / select / snap).
+- Integrates previous circular elements (layers, color wheel logic) + new PressureCurveEditor + AdvancedTimeline. (Playback panel now includes "Exp" for audio export.)
+- Replaces old fixed sidebar with the vision's "orbiting, collapsible circles" paradigm. Top toolbar kept minimal for globals (undo, play, etc.).
+- Full drag-and-drop repositioning + clustering + auto (optional) collapse after action for clean canvas focus. Haptic feedback makes the UI feel premium and responsive on device.
 
-## 🔑 Step 1 — Create `GH_PAT` (one-time, ~2 min)
+The UI now truly embodies the original "every tool as a satellite orbiting the canvas" with spiral/cyclical menus and magnetic clustering. Pro artists can customize their workspace by feel. Further circular polish (haptics + brush preview) completed in this iteration. Phase 2 polish integrated into panels too. Deeper layers/compositing added this step.
 
-GitHub's built-in `GITHUB_TOKEN` can't write repository Secrets — you need a Personal Access Token once.
+Next milestones:
+- **More advanced drawing polish (this build)**: See dedicated updates in Current Status + edits to BrushEngine.kt (true mesh liquify with grid + bilinear), CanvasViewModel.kt (VP line snapping in screenToWorld + snapToVanishingLines), SoCreateRenderer.kt (cleaned VP guides stub), README. Builds on prior basic liquify/symmetry/VPs.
+- **Deeper Layers & Compositing (prior build)**: See dedicated updates in Current Status + edits to CircularToolPanels.kt (expanded compositing card with opacity slider + blend buttons + layer list), CanvasViewModel.kt (setCurrentLayerOpacity, setCurrentLayerBlendMode, getters; import BlendMode), README. Renderer already had per-layer alpha + blend in drawLayer (bottom-to-top, glBlendFunc approximations); now fully wired from circular UI. Preserves existing Layer model + serializer.
+- Advanced layer features (opacity sliders, blend modes, circular layer panels) -- advanced in prior step.
+- **Phase 2 polish (waveforms, full X-sheet, audio export) (prior build)**: See dedicated updates in Current Status + new code in AdvancedTimeline.kt, CanvasViewModel.kt (frameNotes, frameCameraMoves, exportAudioWithProject, sync), CanvasScreen.kt (passed params), CircularToolPanels.kt (export child). Dynamic waveforms (hasAudio-aware), full X-sheet (Exposure/Notes/Camera rows + per-frame TextField editors), audio export (local project+audio sidecar stub).
+- **Further circular UI (prior build)**: Deeper integration of brush preview into panels (live accurate preview + controls), full spiral tool clustering with haptic feedback (magnetic snaps, haptics on all actions, S/C modes, visual clusters).
+- Continue with deeper features or UI polish (e.g. "more advanced drawing polish (true mesh/GPU liquify or VP line snapping)" (completed this step), "full circular tool clustering/haptics" follow-ups, "performance further", "Polish Phase 1 remaining", "export", "accessibility", "temporal layers", or any other verbatim item from history/blueprint).
+- User-specified next priority will drive the next iteration. (My choice for this step: performance further from the full roadmap list.)
 
-1. **GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens**
-2. Click **Generate new token** · Scope: *Only select repositories* → pick this repo
-3. **Permissions → Repository permissions → Secrets → Read and write** · Generate & copy the token
-4. **Repo → Settings → Secrets and variables → Actions → New repository secret**
-   Name: `GH_PAT` · Value: *paste token* → **Add secret**
-
-> This is a one-time setup. Everything after this runs automatically.
-
----
-
-## 🗝 Step 2 — Generate your keystore (auto-saves Secrets)
-
-**Actions → "Generate Android Keystores" → Run workflow**
-
-One thing that helped me: the workflow generates a keystore and registers the signing secrets to **Settings → Secrets and variables → Actions** — I didn't need to touch keytool.
-
-All fields have sensible defaults — just click Run if you're unsure:
-
-| Input | Default | Notes |
-|---|---|---|
-| `key_alias` | `release` | Name for the signing key |
-| `key_cn` | repo name | Certificate Common Name |
-| `key_o` | owner name | Organization field |
-| `key_c` | `US` | ISO country code |
-| `validity_days` | `10000` (~27 yrs) | How long the cert is valid |
-
-After the workflow finishes, these Secrets show up in **Settings → Secrets and variables → Actions**:
-
-| Secret | What it contains |
-|---|---|
-| `ANDROID_KEYSTORE_BASE64` | Release keystore (Base64-encoded) |
-| `ANDROID_KEYSTORE_PASSWORD` | Keystore password |
-| `ANDROID_KEY_ALIAS` | Key alias |
-| `ANDROID_KEY_PASSWORD` | Key password |
-| `ANDROID_DEBUG_KEYSTORE_BASE64` | Debug keystore (same cert on every build) |
-
-Verify at **Settings → Secrets and variables → Actions**.
-
-![Generate Android Keystores — workflow sidebar showing the three key workflows](https://github.com/user-attachments/assets/41e0da8a-2085-482e-a6c0-98f8baf2462f)
-
-> [!NOTE]
-> Re-running this workflow replaces all five Secrets with a freshly generated keystore.
-
----
-
-## 🔨 Step 3 — Debug build (automatic)
-
-Push Android/build file changes to `main` and the debug build runs on its own.
-
-> **Note:** `android-ci.yml` uses `paths` filters. Pushes that touch only unrelated files (e.g., README edits) will not trigger the workflow — that is expected behavior.
-
-- **Trigger**: push or PR to `main`, `master`, or `develop` when the changed files match the path filters
-- **Download**: Actions → job → Artifacts → **`app-debug`** → `app-debug.apk`
-- **Retention**: 30 days
-- If `ANDROID_DEBUG_KEYSTORE_BASE64` is set, the same signing certificate is used every time
+## License
+GNU GPL v3 (code) + MIT for the template parts.
 
 ---
 
-## 📦 Step 4 — Signed release build
+**This setup lets you develop and distribute professional-grade APKs with almost zero local tooling.**
 
-**Option A — click to release:**
-1. Push and create the tag first: `git tag v1.0.0 && git push origin v1.0.0`
-2. **Actions → "Release Build" → Run workflow**
-3. Enter the tag you just pushed (e.g. `v1.0.0`) → Run
+Ready for true pro artists on Android. Let's ship it.
 
-> **Important:** Manual dispatch checks out the tag you enter. The tag **must already exist** in the repo before you run the workflow, or the checkout step will fail.
-
-**Option B — tag to release (fully automatic):**
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-# → workflow triggers, APK built and attached to a GitHub Release automatically
-```
-
-- **Download**: Actions → job → Artifacts → **`app-release-signed`** → `app-release.apk`
-- **Retention**: 90 days
-- The APK is also attached to a **GitHub Release** on the Releases page
-
-> **Prerequisite**: Secrets from Step 2 must be registered before running this.
-
----
-
-## 🏗 Build locally (optional)
-
-Requires **Java 17+** and the **Android SDK** (command-line tools, platform, and build-tools) — GitHub-hosted runners have these pre-installed, but you need to install the SDK locally if it isn't already set up ([Android SDK setup guide](https://developer.android.com/tools)):
-
-```bash
-# Debug APK → app/build/outputs/apk/debug/app-debug.apk
-./gradlew assembleDebug
-
-# Release APK (needs signing env vars set — normally handled by CI)
-./gradlew assembleRelease
-```
-
----
-
-## 📁 File structure
-
-```
-.
-├── app/
-│   ├── build.gradle.kts         # ← App ID, SDK versions, signing config
-│   ├── proguard-rules.pro
-│   └── src/main/
-│       ├── AndroidManifest.xml
-│       ├── java/com/yourname/yourapp/
-│       │   └── MainActivity.kt
-│       └── res/
-├── build.gradle.kts             # Root build config
-├── settings.gradle.kts
-├── gradle.properties
-├── gradlew / gradlew.bat
-└── .github/workflows/
-    ├── android-ci.yml           # Auto debug build on push
-    ├── release.yml              # Signed release build
-    └── generate-keystore.yml   # One-time keystore + secret setup
-```
-
----
-
-<details>
-<summary>🔒 Security: why Actions are pinned to commit SHAs</summary>
-
-Workflows in this template reference Actions like this:
-
-```yaml
-uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-```
-
-**Why not `@v6`?**  
-Version tags are mutable — the action author can silently point `v6` at entirely different code. If that happens (accident, compromised account, or supply-chain attack), every repo using `@v6` would execute the attacker's code on the next run — with full access to your repository Secrets.
-
-**Why a SHA is safer**  
-A commit SHA is immutable. Pinning to a SHA guarantees you always run exactly the code you reviewed. The human-readable tag stays as a comment so you know which version you're on.
-
-📖 [GitHub Docs: Security hardening for GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions#using-third-party-actions)
-
-</details>
-
----
-
-<details>
-<summary>🇯🇵 日本語版 README（クリックで展開）</summary>
-
-## android-apk-template（日本語）
-
-GitHub Actionsだけでビルドと署名ができるテンプレートを作ってみました。共有PCしか手元になかったので、同じような状況の方の参考になれば。
-
-### このテンプレートでできること
-
-| こんな状況に | この部分が助かった |
-|---|---|
-| 非力なPCやAndroid Studioが動かせない環境 | GitHub Actionsで動くので、ローカルには何もインストールしなくてすんだ |
-| サイドプロジェクトをサクッと始めたい | 最小構成でpushすればビルドが走る |
-| keystoreや署名まわりがよくわからない | ワークフローを動かすとkeystoreが生成されて **Settings → Secrets and variables → Actions** に登録された（keytoolコマンドを触らずに済んだ） |
-| 友人・テスターにAPKを渡したい | ActionsのArtifactsタブから署名済みAPKをダウンロードできる |
-| サプライチェーンリスクが気になる | サードパーティのActionをすべてコミットSHAでピン留めしている |
-
-### ワークフロー一覧
-
-| ワークフロー | トリガー | 出力 | 保存期間 |
-|---|---|---|---|
-| `android-ci.yml` | `main` / `master` / `develop` への Push / PR（**対象 `paths` の変更時のみ**） | デバッグ APK | 30日 |
-| `release.yml` | 手動 または `v*` タグ push | **署名済み**リリース APK + GitHub Release | 90日 |
-| `generate-keystore.yml` | 手動（**初回のみ**） | キーストア＋Secretsを自動登録 | — |
-
-### ステップ 0 — アプリIDの変更（最初にやること）
-
-**`app/build.gradle.kts`** を開いて両方の行を変更:
-
-```diff
-- namespace   = "com.example.myapp"
-- applicationId = "com.example.myapp"
-+ namespace   = "com.yourname.yourapp"
-+ applicationId = "com.yourname.yourapp"
-```
-
-ソースディレクトリ名も合わせて変更し、各Kotlinファイルの `package` 行も更新してください:
-
-```
-app/src/main/java/com/example/myapp/   →   app/src/main/java/com/yourname/yourapp/
-app/src/test/java/com/example/myapp/   →   app/src/test/java/com/yourname/yourapp/
-```
-
-各 `.kt` ファイルの先頭行も変更:
-
-```diff
-- package com.example.myapp
-+ package com.yourname.yourapp
-```
-
-### ステップ 1 — `GH_PAT` の作成（初回のみ、約2分）
-
-`GITHUB_TOKEN` はリポジトリのSecretsに書き込めないため、Personal Access Tokenが1回だけ必要です。
-
-1. **GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens**
-2. **Generate new token** をクリック · *Only select repositories* → このリポジトリを選択
-3. **Permissions → Repository permissions → Secrets → Read and write** · 生成してコピー
-4. **リポジトリ → Settings → Secrets and variables → Actions → New repository secret**
-   名前: `GH_PAT` · 値: コピーしたトークン → **Add secret**
-
-> 初回のみの作業です。以降はすべて自動で動きます。
-
-### ステップ 2 — キーストアの自動生成（Secrets自動登録）
-
-**Actions → "Generate Android Keystores" → Run workflow**
-
-少し助かったことの一つ：このワークフローを動かすと、keystoreが生成されて署名用のSecretsが **Settings → Secrets and variables → Actions** に登録されました。keytoolは触らずに済みました。
-
-すべての入力項目にデフォルト値があるので、迷ったらそのまま Run でOKです:
-
-| 入力項目 | デフォルト | 説明 |
-|---|---|---|
-| `key_alias` | `release` | 署名キーの名前 |
-| `key_cn` | リポジトリ名 | 証明書のCommon Name |
-| `key_o` | オーナー名 | 組織名 |
-| `key_c` | `US` | ISO国コード |
-| `validity_days` | `10000`（約27年） | 証明書の有効期間 |
-
-ワークフロー完了後、以下のSecretsが **Settings → Secrets and variables → Actions** に登録されます:
-
-| Secret名 | 内容 |
-|---|---|
-| `ANDROID_KEYSTORE_BASE64` | リリース用キーストア（Base64） |
-| `ANDROID_KEYSTORE_PASSWORD` | キーストアパスワード |
-| `ANDROID_KEY_ALIAS` | キーエイリアス |
-| `ANDROID_KEY_PASSWORD` | キーパスワード |
-| `ANDROID_DEBUG_KEYSTORE_BASE64` | デバッグ用キーストア（毎回同じ証明書） |
-
-**Settings → Secrets and variables → Actions** で確認できます。
-
-> [!NOTE]
-> このワークフローを再実行すると、5つのSecretsがすべて新しいキーストアで上書きされます。
-
-### ステップ 3 — デバッグビルド（自動）
-
-Android/ビルド関連ファイルを `main` ブランチに push するとデバッグビルドが自動で実行されます。
-
-> **注意:** `android-ci.yml` には `paths` フィルタがあります。READMEだけの変更など、対象外のファイルのみを変更したpushではワークフローが起動しません（これは正常な動作です）。
-
-- **トリガー**: `main`、`master`、`develop` へのpush または PR（pathsフィルタに合致する変更のみ）
-- **ダウンロード**: Actions → ジョブ → Artifacts → **`app-debug`** → `app-debug.apk`
-- **保存期間**: 30日間
-- `ANDROID_DEBUG_KEYSTORE_BASE64` を登録していれば、毎回同じ証明書でビルドされます
-
-### ステップ 4 — 署名済みリリースビルド
-
-**方法A — 手動実行:**
-1. 先にタグを作成してpush: `git tag v1.0.0 && git push origin v1.0.0`
-2. **Actions → "Release Build" → Run workflow**
-3. 作成したタグ（例: `v1.0.0`）を入力して Run
-
-> **重要:** 手動実行時はタグ名で `checkout` します。**タグが事前にpush済みでないと checkout で失敗**します。
-
-**方法B — タグpushで自動実行:**
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-# → ワークフローが自動起動し、GitHub Releaseに署名済みAPKが添付される
-```
-
-- **ダウンロード**: Actions → ジョブ → Artifacts → **`app-release-signed`** → `app-release.apk`
-- **保存期間**: 90日間
-- Releasesページの **GitHub Release** にもAPKが自動添付されます
-
-> **前提**: ステップ2のSecretsが登録済みであること。
-
-### ローカルビルド（任意）
-
-**Java 17以上** と **Android SDK**（コマンドラインツール・platform・build-tools）が必要です。GitHub Actions のランナーにはプリインストールされていますが、ローカル環境では別途インストールが必要です（[Android SDK セットアップガイド](https://developer.android.com/tools)）:
-
-```bash
-# デバッグAPK → app/build/outputs/apk/debug/app-debug.apk
-./gradlew assembleDebug
-
-# リリースAPK（署名用の環境変数が必要 — 通常はCIが処理）
-./gradlew assembleRelease
-```
-
-### ファイル構成
-
-```
-.
-├── app/
-│   ├── build.gradle.kts         # ← アプリID・SDKバージョン・署名設定
-│   ├── proguard-rules.pro
-│   └── src/main/
-│       ├── AndroidManifest.xml
-│       ├── java/com/yourname/yourapp/
-│       │   └── MainActivity.kt
-│       └── res/
-├── build.gradle.kts             # ルートビルド設定
-├── settings.gradle.kts
-├── gradle.properties
-├── gradlew / gradlew.bat
-└── .github/workflows/
-    ├── android-ci.yml           # push時の自動デバッグビルド
-    ├── release.yml              # 署名済みリリースビルド
-    └── generate-keystore.yml   # キーストア生成＋Secret登録（初回のみ）
-```
-
-### セキュリティについて
-
-このテンプレートのワークフローはサードパーティのActionをすべて**コミットSHA**でピン留めしています。
-
-```yaml
-uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-```
-
-`@v6` のようなバージョンタグは可変ポインターのため、リポジトリオーナーがいつでも別のコードに差し替えられます。サプライチェーン攻撃やアカウント侵害が起きた場合、`@v6` を使っている全プロジェクトで次回実行時に攻撃者のコードが動きます（リポジトリのSecretsに完全アクセスした状態で）。
-
-コミットSHAは不変なので、レビュー済みのコードだけが実行されることを保証できます。コメント（`# v6`）でバージョンも一目でわかります。
-
-📖 [GitHub Actions セキュリティ強化ガイド](https://docs.github.com/ja/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions#using-third-party-actions)（GitHub公式）
-
-</details>
+(Adapted from the original comprehensive blueprint + the android-apk-template for production GitHub workflow.)

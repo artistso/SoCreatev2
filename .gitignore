@@ -1,11 +1,27 @@
+# Gradle
+.gradle/
+build/
+local.properties
 *.iml
-.gradle
-/local.properties
-/.idea
+.idea/
+
+# Android
+*.apk
+*.aab
+*.ap_
+*.dex
+bin/
+gen/
+out/
+
+# Misc
+*.log
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+Thumbs.db
+
+# Keystore
 *.jks
 *.keystore
+
+# SoCreate specific
+*.socreate
